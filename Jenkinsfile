@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
     tools {
@@ -6,6 +5,8 @@ pipeline {
     }
     environment {
         SONAR_TOKEN = credentials('Sonarqube-token') // Replace with your credentials ID for the SonarQube token
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17\\bin'
+        PATH = "${JAVA_HOME};${env.PATH}"
     }
     stages {
         stage('Checkout') {
@@ -28,8 +29,6 @@ pipeline {
                         -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.login=%SONAR_TOKEN%
                     """
-
-                    
                 }
             }
         }
