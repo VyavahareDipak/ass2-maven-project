@@ -23,11 +23,13 @@ pipeline {
                 withSonarQubeEnv('sonarqube') { // Ensure the name matches your SonarQube configuration
                     bat """
                         mvn sonar:sonar \
-                        -Dsonar.projectKey=maven-pro1 \
+                        -Dsonar.projectKey=maven-pro \
                         -Dsonar.sources=src/main/java \
                         -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.login=%SONAR_TOKEN%
                     """
+
+                    
                 }
             }
         }
