@@ -18,17 +18,14 @@ pipeline {
             }
         }
 
-        stage('Dependency Check') {
+         stage('Build') {
             steps {
-                echo 'Verifying Maven Dependencies...'
-                bat 'mvn dependency:resolve'
+                sh 'mvn -B -DskipTests clean package'
             }
         }
-
-        stage('Build and Test') {
+        stage('Test') {
             steps {
-                echo 'Building and Testing the Maven Project...'
-                bat 'mvn clean test'
+                sh 'mvn test'
             }
         }
 
@@ -38,8 +35,8 @@ pipeline {
                     echo 'Running SonarQube Analysis...'
                     bat """
                         mvn sonar:sonar ^
-                        -Dsonar.projectKey=my-maven-project ^
-                        -Dsonar.projectName='My Maven Project' ^
+                        -Dsonar.projectKey=ass2-maven-project ^
+                        -Dsonar.projectName='ass2-maven-project' ^
                         -Dsonar.sources=src/main/java ^
                         -Dsonar.host.url=http://localhost:9000 ^
                         -Dsonar.login=%SONAR_TOKEN%
