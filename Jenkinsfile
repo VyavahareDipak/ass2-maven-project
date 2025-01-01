@@ -16,12 +16,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean package'  // Build the project using Maven
             }
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') { // Ensure this matches your SonarQube configuration
+                withSonarQubeEnv('sonarqube') { // Ensure this matches your SonarQube configuration in Jenkins
                     bat """
                         mvn sonar:sonar ^
                         -Dsonar.projectKey=ass2-maven-project ^
