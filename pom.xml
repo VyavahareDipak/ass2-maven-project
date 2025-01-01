@@ -14,6 +14,23 @@
         <sonar.login>${env.SONAR_TOKEN}</sonar.login>
     </properties>
 
+    <dependencies>
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Selenium WebDriver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.13.0</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
