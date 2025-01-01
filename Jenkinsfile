@@ -1,31 +1,45 @@
 pipeline {
     agent any
+
     tools {
-        maven 'sonarmaven' // Ensure this matches the Maven configuration in Jenkins
+        maven 'sonarmaven' // Match the Maven version configured in Jenkins
     }
+
     environment {
-        SONAR_TOKEN = credentials('sonar-global-token') // Replace with your credentials ID for the SonarQube token
-        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17'
+        SONAR_TOKEN = credentials('sonar-global-token') // Replace with your credentials ID
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-17'  // Ensure the correct Java version is installed
         PATH = "${JAVA_HOME}\\bin;${env.PATH}"
     }
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        stage('Build') {
+
+        stage('Dependency Check') {
             steps {
-                bat 'mvn clean package'  // Build the project using Maven
+                echo 'Verifying Maven Dependencies...'
+                bat 'mvn dependency:resolve'
             }
         }
+
+        stage('Build and Test') {
+            steps {
+                echo 'Building and Testing the Maven Project...'
+                bat 'mvn clean test'
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') { // Ensure this matches your SonarQube configuration in Jenkins
+                withSonarQubeEnv('sonarqube') { // Replace 'sonarqube' with your SonarQube configuration name in Jenkins
+                    echo 'Running SonarQube Analysis...'
                     bat """
                         mvn sonar:sonar ^
-                        -Dsonar.projectKey=ass2-maven-project ^
-                        -Dsonar.projectName='ass2-maven-project' ^
+                        -Dsonar.projectKey=my-maven-project ^
+                        -Dsonar.projectName='My Maven Project' ^
                         -Dsonar.sources=src/main/java ^
                         -Dsonar.host.url=http://localhost:9000 ^
                         -Dsonar.login=%SONAR_TOKEN%
@@ -34,13 +48,19 @@ pipeline {
             }
         }
     }
-   
+
     post {
+        always {
+            echo 'Cleaning Up Workspace...'
+            cleanWs() // Clean workspace after every run
+        }
+
         success {
             echo 'Pipeline completed successfully.'
         }
+
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed. Check the logs for errors.'
         }
     }
 }
