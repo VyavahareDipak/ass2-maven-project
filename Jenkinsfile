@@ -23,6 +23,11 @@ pipeline {
                 bat 'mvn clean package'
             }
         }
+        stage('Test'){
+            steps {
+                bat 'mvn test'
+            }
+        }
 
         stage('SonarQube Analysis') {
             steps {
@@ -32,7 +37,7 @@ pipeline {
                         mvn sonar:sonar ^
                         -Dsonar.projectKey=ass2-maven-project ^
                         -Dsonar.projectName='ass2-maven-project' ^
-                        -Dsonar.sources=src/main/java ^
+                        -Dsonar.sources=src/main/java/com/example/automation ^
                         -Dsonar.host.url=http://localhost:9000 ^
                         -Dsonar.login=%SONAR_TOKEN%
                     """
