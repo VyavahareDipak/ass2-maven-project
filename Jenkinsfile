@@ -34,8 +34,8 @@ pipeline {
                     bat """
                         mvn sonar:sonar ^
                         -Dsonar.projectKey=ass2-maven-project ^
-                        -Dsonar.sources=src/main/java ^
-                        -Dsonar.tests=src/test/java ^
+                        -Dsonar.sources=src/main/java/com/example/automation ^
+                        -Dsonar.tests=src/test/java/com/example/automation ^
                         -Dsonar.junit.reportPaths=target/surefire-reports ^
                         -Dsonar.jacoco.reportPaths=target/site/jacoco/jacoco.xml ^
                         -Dsonar.pmd.reportPaths=target/pmd-duplicates.xml ^
