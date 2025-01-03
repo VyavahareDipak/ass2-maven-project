@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         maven 'sonarmaven' // Ensure this matches your Jenkins Maven configuration
-        jdk 'java'
+      
         
     }
 
@@ -20,9 +20,9 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build and test') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean verify'
                 
             }
         }
@@ -32,13 +32,12 @@ pipeline {
                 withSonarQubeEnv('sonarqube') { // Replace 'sonarqube' with your SonarQube server configuration name
                     echo 'Running SonarQube Analysis...'
                     bat """
-                        mvn sonar:sonar ^ 
-                        -Dsonar.projectKey=ass2-maven-project ^ 
-                        -Dsonar.projectName='ass2-maven-project' ^ 
-                        -Dsonar.sources=src/main/java/com/example/automation ^ 
-                        -Dsonar.host.url=http://localhost:9000 ^ 
-                        -Dsonar.login=%SONAR_TOKEN% ^ 
-                        
+                        mvn sonar:sonar \ 
+                        -Dsonar.projectKey=ass2-maven-project \ 
+                        -Dsonar.sources=src/main/java \ 
+                        -Dsonar.tests=src/test/java \ 
+                        -Dsonar.host.url=http://localhost:9000 \ 
+                        -Dsonar.login=%SONAR_TOKEN%   
                     """
                 }
             }
@@ -46,10 +45,7 @@ pipeline {
     }
 
     post {
-        always {
-            echo 'Cleaning Up Workspace...'
-            cleanWs() // Clean workspace after every run
-        }
+        
 
         success {
             echo 'Pipeline completed successfully.'

@@ -44,12 +44,7 @@
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
         </dependency>
-        <dependency>
-                 <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version>
-        </dependency>     
-    </dependencies>
+       
 
     <build>
         <plugins>
@@ -82,7 +77,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- SonarQube Scanner Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
