@@ -32,11 +32,11 @@ pipeline {
                 withSonarQubeEnv('sonarqube') { // Replace 'sonarqube' with your SonarQube server configuration name
                     echo 'Running SonarQube Analysis...'
                     bat """
-                        mvn sonar:sonar \ 
-                        -Dsonar.projectKey=ass2-maven-project \ 
-                        -Dsonar.sources=src/main/java \ 
-                        -Dsonar.tests=src/test/java \ 
-                        -Dsonar.host.url=http://localhost:9000 \ 
+                        mvn sonar:sonar ^
+                        -Dsonar.projectKey=ass2-maven-project ^
+                        -Dsonar.sources=src/main/java ^
+                        -Dsonar.tests=src/test/java ^ 
+                        -Dsonar.host.url=http://localhost:9000 ^ 
                         -Dsonar.login=%SONAR_TOKEN%   
                     """
                 }
