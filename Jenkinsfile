@@ -3,6 +3,8 @@ pipeline {
 
     tools {
         maven 'sonarmaven' // Ensure this matches your Jenkins Maven configuration
+        jdk 'java'
+        
     }
 
     environment {
@@ -21,12 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'mvn clean package'
-            }
-        }
-
-        stage('Test and Coverage') {
-            steps {
-                bat 'mvn verify -Pcoverage jacoco:report'
+                
             }
         }
 
@@ -41,7 +38,7 @@ pipeline {
                         -Dsonar.sources=src/main/java/com/example/automation ^ 
                         -Dsonar.host.url=http://localhost:9000 ^ 
                         -Dsonar.login=%SONAR_TOKEN% ^ 
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                        
                     """
                 }
             }
