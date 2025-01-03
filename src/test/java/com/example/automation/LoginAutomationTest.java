@@ -6,17 +6,34 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginAutomationTest {
 
     @Test
     public void testLogin() {
+        // Start the server in a separate thread
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            try {
+                mainApplication.main(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         // Set up the WebDriver using WebDriverManager
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
         try {
+            // Wait for the server to start
+            Thread.sleep(2000); // Adjust as needed to ensure the server is running
+
             // Navigate to the local login page
             driver.get("http://localhost:8000/login");
 
@@ -30,8 +47,7 @@ public class LoginAutomationTest {
             passwordField.sendKeys("testPassword");
             loginButton.click();
 
-            // Validate successful login (adjust according to actual page behavior)
-            // In this case, we're just checking if we stay on the same page after clicking login
+            // Validate successful login
             String expectedTitle = "Login";  // In case the page doesn't change, check the title
             String actualTitle = driver.getTitle();
             assertEquals(expectedTitle, actualTitle, "The page title should match the expected title after login.");
@@ -40,6 +56,7 @@ public class LoginAutomationTest {
         } finally {
             // Close the browser
             driver.quit();
+            executor.shutdownNow(); // Stop the server
         }
     }
 }
