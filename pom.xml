@@ -45,7 +45,7 @@
             <version>${webdrivermanager.version}</version>
         </dependency>
        
- <dependencies>
+ </dependencies>
     <build>
         <plugins>
             <!-- Compiler Plugin -->
