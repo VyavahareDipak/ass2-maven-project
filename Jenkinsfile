@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Test'){
             steps {
-                bat 'mvn clean verify'
+                bat 'mvn clean verify sonar:sonar'
             }
         }
 
@@ -40,8 +40,7 @@ pipeline {
                         -Dsonar.sources=src/main/java/com/example/automation ^
                         -Dsonar.host.url=http://localhost:9000 ^
                         -Dsonar.login=%SONAR_TOKEN% ^
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
-                        mvn sonar:sonar -Pcoverage
+                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml 
                     """
                 }
             }
